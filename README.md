@@ -11,10 +11,10 @@ mongo script.js
 
 ## Run the server
 ```
-switch comments on lines 12 and 13 under ticketing-manager/src/store/modules/tickets.js
-in the ticketing-manager repo
-
 npm start
+
+switch comments on lines 12 and 13 under ticketing-manager/src/store/modules/tickets.js
+in the ticketing-manager repo to have to data come from this server instead of in-memory
 ```
 
 [![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
