@@ -1,4 +1,4 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository';
 
 @model()
 export class Ticket extends Entity {
@@ -9,14 +9,12 @@ export class Ticket extends Entity {
   id?: string;
 
   @property({
-    type: 'number',
-    required: true,
+    type: 'number'
   })
   number: number;
 
   @property({
-    type: 'number',
-    required: true,
+    type: 'number'
   })
   index: number;
 
@@ -46,20 +44,17 @@ export class Ticket extends Entity {
 
   @property({
     type: 'number',
-    required: true,
   })
   window: number;
 
   @property({
     type: 'number',
-    required: true,
     default: 0,
   })
   strikes: number;
 
   @property({
     type: 'boolean',
-    required: true,
     default: false,
   })
   isComplete: boolean;

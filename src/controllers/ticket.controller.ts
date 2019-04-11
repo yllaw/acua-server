@@ -16,24 +16,31 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {Ticket} from '../models';
-import {TicketRepository} from '../repositories';
+import { Ticket } from '../models';
+import { TicketRepository } from '../repositories';
 
 export class TicketController {
+  static numberGen: number = 1;
+  static windowGen: number = 0;
+
   constructor(
     @repository(TicketRepository)
-    public ticketRepository : TicketRepository,
-  ) {}
+    public ticketRepository: TicketRepository,
+  ) { }
 
   @post('/tickets', {
     responses: {
       '200': {
         description: 'Ticket model instance',
-        content: {'application/json': {schema: {'x-ts-type': Ticket}}},
+        content: { 'application/json': { schema: { 'x-ts-type': Ticket } } },
       },
     },
   })
   async create(@requestBody() ticket: Ticket): Promise<Ticket> {
+    ticket.number = TicketController.numberGen;
+    ticket.index = TicketController.numberGen++;
+    ticket.window = TicketController.windowGen++ % 4;
+
     return await this.ticketRepository.create(ticket);
   }
 
@@ -41,7 +48,7 @@ export class TicketController {
     responses: {
       '200': {
         description: 'Ticket model count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -57,7 +64,7 @@ export class TicketController {
         description: 'Array of Ticket model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Ticket}},
+            schema: { type: 'array', items: { 'x-ts-type': Ticket } },
           },
         },
       },
@@ -73,7 +80,7 @@ export class TicketController {
     responses: {
       '200': {
         description: 'Ticket PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -88,7 +95,7 @@ export class TicketController {
     responses: {
       '200': {
         description: 'Ticket model instance',
-        content: {'application/json': {schema: {'x-ts-type': Ticket}}},
+        content: { 'application/json': { schema: { 'x-ts-type': Ticket } } },
       },
     },
   })
