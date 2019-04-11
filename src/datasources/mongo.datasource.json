@@ -1,0 +1,10 @@
+{
+  "name": "mongo",
+  "connector": "mongodb",
+  "url": "mongodb://localhost/acua",
+  "host": "",
+  "port": 0,
+  "user": "",
+  "password": "",
+  "database": "acua"
+}
