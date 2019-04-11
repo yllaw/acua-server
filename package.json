@@ -30,7 +30,7 @@
     "docker:run": "docker run -p 3000:3000 -d acua",
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
-    "start": "nodemon .",
+    "start": "node .",
     "prepublishOnly": "npm run test"
   },
   "repository": {
