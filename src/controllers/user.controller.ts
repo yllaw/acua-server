@@ -1,137 +1,116 @@
-import {
-  Count,
-  CountSchema,
-  Filter,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
-  get,
-  getFilterSchemaFor,
-  getWhereSchemaFor,
-  patch,
-  put,
-  del,
-  requestBody,
-} from '@loopback/rest';
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Node module: loopback4-example-shopping
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import { repository } from '@loopback/repository';
+import { post, param, get, requestBody } from '@loopback/rest';
 import { User } from '../models';
 import { UserRepository } from '../repositories';
+import { inject, Setter } from '@loopback/core';
+import {
+  authenticate,
+  UserProfile,
+  AuthenticationBindings,
+} from '@loopback/authentication';
+import {
+  CredentialsRequestBody,
+  UserProfileSchema,
+} from './specs/user-controller.specs';
+import { Credentials } from '../repositories/user.repository';
+import { PasswordHasher } from '../services/hash.password.bcryptjs';
+import { JWTAuthenticationService } from '../services/JWT.authentication.service';
+import { JWTAuthenticationBindings, PasswordHasherBindings } from '../keys';
+import { validateCredentials } from '../services/JWT.authentication.service';
+import * as _ from 'lodash';
 
 export class UserController {
   constructor(
-    @repository(UserRepository)
-    public userRepository: UserRepository,
+    @repository(UserRepository) public userRepository: UserRepository,
+    @inject.setter(AuthenticationBindings.CURRENT_USER)
+    public setCurrentUser: Setter<UserProfile>,
+    @inject(PasswordHasherBindings.PASSWORD_HASHER)
+    public passwordHahser: PasswordHasher,
+    @inject(JWTAuthenticationBindings.SERVICE)
+    public jwtAuthenticationService: JWTAuthenticationService,
   ) { }
 
-  @post('/users', {
-    responses: {
-      '200': {
-        description: 'User model instance',
-        content: { 'application/json': { schema: { 'x-ts-type': User } } },
-      },
-    },
-  })
+  @post('/users')
   async create(@requestBody() user: User): Promise<User> {
-    return await this.userRepository.create(user);
+    validateCredentials(_.pick(user, ['username', 'password']));
+    user.password = await this.passwordHahser.hashPassword(user.password);
+
+    // Save & Return Result
+    const savedUser = await this.userRepository.create(user);
+    delete savedUser.password;
+    return savedUser;
   }
 
-  @get('/users/count', {
+  @get('/users/{userId}', {
     responses: {
       '200': {
-        description: 'User model count',
-        content: { 'application/json': { schema: CountSchema } },
-      },
-    },
-  })
-  async count(
-    @param.query.object('where', getWhereSchemaFor(User)) where?: Where,
-  ): Promise<Count> {
-    return await this.userRepository.count(where);
-  }
-
-  @get('/users', {
-    responses: {
-      '200': {
-        description: 'Array of User model instances',
+        description: 'User',
         content: {
           'application/json': {
-            schema: { type: 'array', items: { 'x-ts-type': User } },
+            schema: {
+              'x-ts-type': User,
+            },
           },
         },
       },
     },
   })
-  async find(
-    @param.query.object('filter', getFilterSchemaFor(User)) filter?: Filter,
-  ): Promise<User[]> {
-    return await this.userRepository.find(filter);
+  async findById(@param.path.string('userId') userId: string): Promise<User> {
+    return this.userRepository.findById(userId, {
+      fields: { password: false },
+    });
   }
 
-  @patch('/users', {
+  @get('/users/me', {
     responses: {
       '200': {
-        description: 'User PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
+        description: 'The current user profile',
+        content: {
+          'application/json': {
+            schema: UserProfileSchema,
+          },
+        },
       },
     },
   })
-  async updateAll(
-    @requestBody() user: User,
-    @param.query.object('where', getWhereSchemaFor(User)) where?: Where,
-  ): Promise<Count> {
-    return await this.userRepository.updateAll(user, where);
+  @authenticate('jwt')
+  async printCurrentUser(
+    @inject('authentication.currentUser') currentUser: UserProfile,
+  ): Promise<UserProfile> {
+    return currentUser;
   }
 
-  @get('/users/{id}', {
+  @post('/users/login', {
     responses: {
       '200': {
-        description: 'User model instance',
-        content: { 'application/json': { schema: { 'x-ts-type': User } } },
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                token: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
       },
     },
   })
-  async findById(@param.path.string('id') id: string): Promise<User> {
-    return await this.userRepository.findById(id);
-  }
-
-  @patch('/users/{id}', {
-    responses: {
-      '204': {
-        description: 'User PATCH success',
-      },
-    },
-  })
-  async updateById(
-    @param.path.string('id') id: string,
-    @requestBody() user: User,
-  ): Promise<void> {
-    await this.userRepository.updateById(id, user);
-  }
-
-  @put('/users/{id}', {
-    responses: {
-      '204': {
-        description: 'User PUT success',
-      },
-    },
-  })
-  async replaceById(
-    @param.path.string('id') id: string,
-    @requestBody() user: User,
-  ): Promise<void> {
-    await this.userRepository.replaceById(id, user);
-  }
-
-  @del('/users/{id}', {
-    responses: {
-      '204': {
-        description: 'User DELETE success',
-      },
-    },
-  })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.userRepository.deleteById(id);
+  async login(
+    @requestBody(CredentialsRequestBody) credentials: Credentials,
+  ): Promise<{ token: string }> {
+    validateCredentials(credentials);
+    const token = await this.jwtAuthenticationService.getAccessTokenForUser(
+      credentials,
+    );
+    return { token };
   }
 }

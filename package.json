@@ -55,13 +55,25 @@
     "@loopback/rest": "^1.10.0",
     "@loopback/rest-explorer": "^1.1.14",
     "@loopback/service-proxy": "^1.1.2",
-    "loopback-connector-mongodb": "^3.9.2"
+    "loopback-connector-mongodb": "^3.9.2",
+    "@loopback/authentication": "^1.1.0",
+    "@types/jsonwebtoken": "^8.3.2",
+    "@types/passport": "^1.0.0",
+    "bcryptjs": "^2.4.3",
+    "debug": "^4.1.0",
+    "express": "^4.16.4",
+    "isemail": "^3.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "loopback-connector-kv-redis": "^3.0.1",
+    "loopback-connector-rest": "^3.4.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.1",
     "@loopback/testlab": "^1.2.2",
     "@loopback/tslint-config": "^2.0.4",
     "@types/node": "^10.11.2",
+    "@types/bcryptjs": "^2.4.2",
     "tslint": "^5.14.0",
     "typescript": "^3.4.1"
   }

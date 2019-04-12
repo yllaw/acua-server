@@ -1,12 +1,17 @@
-import {DefaultCrudRepository} from '@loopback/repository';
-import {User} from '../models';
-import {MongoDataSource} from '../datasources';
-import {inject} from '@loopback/core';
+import { DefaultCrudRepository } from '@loopback/repository';
+import { User } from '../models';
+import { MongoDataSource } from '../datasources';
+import { inject } from '@loopback/core';
+
+export type Credentials = {
+  username: string;
+  password: string;
+};
 
 export class UserRepository extends DefaultCrudRepository<
   User,
   typeof User.prototype.id
-> {
+  > {
   constructor(
     @inject('datasources.mongo') dataSource: MongoDataSource,
   ) {
