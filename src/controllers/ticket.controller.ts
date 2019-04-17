@@ -17,7 +17,7 @@ import {
   requestBody,
 } from '@loopback/rest';
 import { Ticket } from '../models';
-import { TicketRepository } from '../repositories';
+import { TicketRepository, UserRepository } from '../repositories';
 
 export class TicketController {
   static numberGen: number = 1;
@@ -26,6 +26,8 @@ export class TicketController {
   constructor(
     @repository(TicketRepository)
     public ticketRepository: TicketRepository,
+    @repository(UserRepository)
+    public userRepository: UserRepository
   ) { }
 
   @post('/tickets', {
@@ -37,9 +39,14 @@ export class TicketController {
     },
   })
   async create(@requestBody() ticket: Ticket): Promise<Ticket> {
+    // Tickets are only given to open windows
+    const filter: Filter = { where: { loggedIn: true, location: ticket.location } };
+    const windows = await this.userRepository.find(filter);
+    const window = windows[TicketController.windowGen++ % windows.length].window;
+
     ticket.number = TicketController.numberGen;
     ticket.index = TicketController.numberGen++;
-    ticket.window = TicketController.windowGen++ % 4;
+    ticket.window = window;
 
     return await this.ticketRepository.create(ticket);
   }

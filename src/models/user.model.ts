@@ -28,7 +28,13 @@ export class User extends Entity {
   @property({
     type: 'number',
   })
-  window?: number;
+  window: number;
+
+  @property({
+    type: 'boolean',
+    default: false,
+  })
+  loggedIn: boolean;
 
 
   constructor(data?: Partial<User>) {
