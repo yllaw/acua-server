@@ -1,0 +1,3 @@
+applications:
+- name: acua-dev-server
+  memory: 256M

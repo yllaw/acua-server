@@ -29,7 +29,6 @@
     "docker:build": "docker build -t acua .",
     "docker:run": "docker run -p 3000:3000 -d acua",
     "migrate": "node ./dist/migrate",
-    "prestart": "npm run build",
     "start": "node .",
     "prepublishOnly": "npm run test"
   },
@@ -55,7 +54,8 @@
     "@loopback/rest": "^1.10.0",
     "@loopback/rest-explorer": "^1.1.14",
     "@loopback/service-proxy": "^1.1.2",
-    "loopback-connector-mongodb": "^3.9.2"
+    "loopback-connector-mongodb": "^3.9.2",
+    "cfenv": "^1.2.2"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.1",
