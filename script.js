@@ -4,9 +4,6 @@
  * or inside Mongo shell: load('script.js')
  */
 
-//  connect to acua database on localhost
-db = connect('localhost/acua')
-
 // delete all tickets if they exist
 db.Ticket.remove({})
 
