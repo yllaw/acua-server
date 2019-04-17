@@ -1,0 +1,5 @@
+{
+    "name": "mongo",
+    "connector": "mongodb",
+    "url": "mongodb+srv://acua-team:Bvl0bZBOi0GHXpGq@acua-s8fjv.azure.mongodb.net/acua?retryWrites=true"
+}
