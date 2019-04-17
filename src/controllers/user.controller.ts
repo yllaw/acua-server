@@ -1,6 +1,6 @@
 import { repository } from '@loopback/repository';
 import {
-  post,
+  patch,
   requestBody,
 } from '@loopback/rest';
 import { User } from '../models';
@@ -12,20 +12,42 @@ export class UserController {
     public userRepository: UserRepository,
   ) { }
 
-  @post('/users/login', {
+  @patch('/users/login', {
     responses: {
-      '200': {
-        description: 'User model instance',
+      '204': {
+        description: 'User login',
         content: { 'application/json': { schema: { 'x-ts-type': User } } },
       },
     },
   })
-  async create(@requestBody() userSubmit: User): Promise<User | null> {
+  async login(@requestBody() userSubmit: User): Promise<User | null> {
     let user = await this.userRepository.findOne({ where: { username: userSubmit.username } })
 
     if (!user || user.password !== userSubmit.password)
       return null
 
+    user.loggedIn = true
+
+    await this.userRepository.replaceById(user.id, user)
+
     return user
+  }
+
+  @patch('/users/logout', {
+    responses: {
+      '204': {
+        description: 'User logout',
+        content: { 'application/json': { schema: { 'x-ts-type': User } } },
+      },
+    },
+  })
+  async logout(@requestBody() userSubmit: User): Promise<void> {
+    let user = await this.userRepository.findOne({ where: { username: userSubmit.username } })
+
+    if (user !== null) {
+      user.loggedIn = false
+
+      await this.userRepository.replaceById(user.id, user)
+    }
   }
 }
