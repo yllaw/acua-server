@@ -38,10 +38,15 @@ export class TicketController {
       },
     },
   })
-  async create(@requestBody() ticket: Ticket): Promise<Ticket> {
+  async create(@requestBody() ticket: Ticket): Promise<Ticket | null> {
     // Tickets are only given to open windows
     const filter: Filter = { where: { loggedIn: true, location: ticket.location } };
     const windows = await this.userRepository.find(filter);
+
+    if (windows.length === 0) {
+      return null;
+    }
+
     const window = windows[TicketController.windowGen++ % windows.length].window;
 
     ticket.number = TicketController.numberGen;
