@@ -18,7 +18,7 @@ import {
 } from '@loopback/rest';
 import { Ticket } from '../models';
 import { TicketRepository, UserRepository } from '../repositories';
-import { CronJob } from 'cron'
+import { CronJob } from 'cron';
 
 export class TicketController {
   static numberGen: number = 1;
@@ -29,7 +29,7 @@ export class TicketController {
     // 00: second 00: minute 00: hour *: days of month *: months *: days of week
     TicketController.numberGen = 1;
     TicketController.windowGen = 0;
-    console.log(`Ticket Counter reset to ${TicketController.numberGen}`)
+    console.log(`Ticket Counter reset to ${TicketController.numberGen}`);
   }, () => { }, true, 'America/Los_Angeles');
 
   constructor(
