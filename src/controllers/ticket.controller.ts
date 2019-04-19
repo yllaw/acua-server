@@ -20,16 +20,43 @@ import { Ticket } from '../models';
 import { TicketRepository, UserRepository } from '../repositories';
 import { CronJob } from 'cron';
 
+interface locationGen {
+  'Agoura': number;
+  'Baldwin Park': number;
+  'Carson/Gardena': number;
+  'Castaic': number;
+  'Downey': number;
+  'Lancaster': number;
+  'Palmdale': number;
+  [key: string]: number;
+}
+
 export class TicketController {
-  static numberGen: number = 1;
+  static numberGen: locationGen = {
+    'Agoura': 1,
+    'Baldwin Park': 1,
+    'Carson/Gardena': 1,
+    'Castaic': 1,
+    'Downey': 1,
+    'Lancaster': 1,
+    'Palmdale': 1,
+  }
   static windowGen: number = 0;
 
   public resetNumGen = new CronJob('00 00 00 * * *', () => {
     // resets the number and window generators everyday at midnight
     // 00: second 00: minute 00: hour *: days of month *: months *: days of week
-    TicketController.numberGen = 1;
+    TicketController.numberGen = {
+      'Agoura': 1,
+      'Baldwin Park': 1,
+      'Carson/Gardena': 1,
+      'Castaic': 1,
+      'Downey': 1,
+      'Lancaster': 1,
+      'Palmdale': 1,
+    };
     TicketController.windowGen = 0;
-    console.log(`Ticket Counter reset to ${TicketController.numberGen}`);
+    console.log(`Ticket Counter reset to ${TicketController.numberGen.Downey}`);
   }, () => { }, true, 'America/Los_Angeles');
 
   constructor(
@@ -60,8 +87,8 @@ export class TicketController {
 
     const window = windows[TicketController.windowGen++ % windows.length].window;
 
-    ticket.number = TicketController.numberGen;
-    ticket.index = TicketController.numberGen++;
+    ticket.number = TicketController.numberGen[ticket.location];
+    ticket.index = TicketController.numberGen[ticket.location]++;
     ticket.window = window;
 
     return await this.ticketRepository.create(ticket);
