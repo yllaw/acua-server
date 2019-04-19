@@ -55,12 +55,14 @@
     "@loopback/rest": "^1.10.0",
     "@loopback/rest-explorer": "^1.1.14",
     "@loopback/service-proxy": "^1.1.2",
+    "cron": "^1.7.0",
     "loopback-connector-mongodb": "^3.9.2"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.1",
     "@loopback/testlab": "^1.2.2",
     "@loopback/tslint-config": "^2.0.4",
+    "@types/cron": "^1.7.0",
     "@types/node": "^10.11.2",
     "tslint": "^5.14.0",
     "typescript": "^3.4.1"

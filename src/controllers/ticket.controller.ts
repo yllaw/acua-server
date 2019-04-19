@@ -18,17 +18,28 @@ import {
 } from '@loopback/rest';
 import { Ticket } from '../models';
 import { TicketRepository, UserRepository } from '../repositories';
+import { CronJob } from 'cron'
 
 export class TicketController {
   static numberGen: number = 1;
   static windowGen: number = 0;
+
+  public resetNumGen = new CronJob('00 00 00 * * *', () => {
+    // resets the number and window generators everyday at midnight
+    // 00: second 00: minute 00: hour *: days of month *: months *: days of week
+    TicketController.numberGen = 1;
+    TicketController.windowGen = 0;
+    console.log(`Ticket Counter reset to ${TicketController.numberGen}`)
+  }, () => { }, true, 'America/Los_Angeles');
 
   constructor(
     @repository(TicketRepository)
     public ticketRepository: TicketRepository,
     @repository(UserRepository)
     public userRepository: UserRepository
-  ) { }
+  ) {
+    this.resetNumGen.start();
+  }
 
   @post('/tickets', {
     responses: {
