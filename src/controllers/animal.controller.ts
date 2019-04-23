@@ -17,6 +17,10 @@ import {
   requestBody,
 } from '@loopback/rest';
 
-export class AnimalController{
-  
-}
+// export class AnimalController{
+
+//   constructor{
+//   @repository(AnimalRepository)
+//   }
+
+// }

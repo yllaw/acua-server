@@ -6,7 +6,7 @@ export class Animal extends Entity {
     type: 'string',
     id: true,
   })
-  animal_id?: string;
+  animal_id: string;
 
   @property({
     type: 'string',
@@ -60,7 +60,7 @@ export class Animal extends Entity {
   @property({
     type: 'string',
   })
-  markings: string;
+  markings?: string;
 
   @property({
     type: 'string',
@@ -80,10 +80,15 @@ export class Animal extends Entity {
   @property({
     type: 'string',
   })
-  bites: string;
+  bites?: string;
 
   @property({
-    animal_size: 'string',
+    type: 'string'
+  })
+  animal_size: 'string';
+
+  @property({
+    type: 'string',
   })
   coat: string;
 
@@ -140,7 +145,7 @@ export class Animal extends Entity {
   @property({
     type: 'string',
   })
-    
+
   userid: string;
     @property({
     type: 'string',
