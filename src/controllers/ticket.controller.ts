@@ -76,6 +76,7 @@ export class TicketController {
       },
     },
   })
+
   async create(@requestBody() ticket: Ticket): Promise<Ticket | null> {
     // Tickets are only given to open windows
     const filter: Filter = { where: { loggedIn: true, location: ticket.location } };
@@ -102,6 +103,7 @@ export class TicketController {
       },
     },
   })
+
   async count(
     @param.query.object('where', getWhereSchemaFor(Ticket)) where?: Where,
   ): Promise<Count> {
@@ -114,12 +116,16 @@ export class TicketController {
         description: 'Array of Ticket model instances',
         content: {
           'application/json': {
-            schema: { type: 'array', items: { 'x-ts-type': Ticket } },
+            schema: {
+              type: 'array',
+              items: { 'x-ts-type': Ticket }
+            },
           },
         },
       },
     },
   })
+
   async find(
     @param.query.object('filter', getFilterSchemaFor(Ticket)) filter?: Filter,
   ): Promise<Ticket[]> {
@@ -134,6 +140,7 @@ export class TicketController {
       },
     },
   })
+
   async updateAll(
     @requestBody() ticket: Ticket,
     @param.query.object('where', getWhereSchemaFor(Ticket)) where?: Where,
@@ -149,6 +156,7 @@ export class TicketController {
       },
     },
   })
+
   async findById(@param.path.string('id') id: string): Promise<Ticket> {
     return await this.ticketRepository.findById(id);
   }
@@ -160,6 +168,7 @@ export class TicketController {
       },
     },
   })
+
   async updateById(
     @param.path.string('id') id: string,
     @requestBody() ticket: Ticket,
@@ -174,6 +183,7 @@ export class TicketController {
       },
     },
   })
+
   async replaceById(
     @param.path.string('id') id: string,
     @requestBody() ticket: Ticket,

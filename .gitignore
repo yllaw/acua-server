@@ -65,3 +65,8 @@ api-docs/
 
 # package lock
 package-lock.json
+
+# ignore compiled typescript files
+**/wwwroot/app/**/*.map
+*.d.ts
+

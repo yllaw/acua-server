@@ -5,4 +5,5 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./ticket.repository"));
 __export(require("./user.repository"));
+__export(require("./animal.repository"));
 //# sourceMappingURL=index.js.map
