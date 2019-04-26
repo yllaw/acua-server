@@ -1,158 +1,189 @@
-import { Entity, model, property } from '@loopback/repository';
+import {Entity, model, property} from '@loopback/repository';
 
 @model()
 export class Animal extends Entity {
   @property({
     type: 'string',
+    required: true,
+  })
+  ANIMAL_ID: string;
+
+  @property({
+    type: 'string',
     id: true,
+    required: true,
   })
-  animal_id: string;
-
-  @property({
-    type: 'string',
-    required: true
-  })
-  animal_name: string;
-
-  @property({
-    type: 'string',
-    required: true
-  })
-  animal_type: string;
+  id: string;
 
   @property({
     type: 'string',
     required: true,
   })
-  sex: string;
+  ANIMAL_NAME: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  ANIMAL_TYPE: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  SEX: string;
 
   @property({
     type: 'number',
   })
-  years_old: number;
+  YEARS_OLD?: number;
 
   @property({
     type: 'number',
   })
-  months_old: number;
+  MONTHS_OLD?: number;
 
   @property({
     type: 'date',
     required: true,
   })
-  dob: Date;
+  DOB: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  COLOR_GROUP: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  PRIMARY_COLOR: string;
 
   @property({
     type: 'string',
   })
-  color_group: string;
+  SECONDARY_COLOR?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  BREED_GROUP: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  PRIMARY_BREED: string;
 
   @property({
     type: 'string',
   })
-  primary_color: number;
+  SECONDARY_BREED?: string;
 
   @property({
     type: 'string',
   })
-  secondary_color: string;
+  MARKINGS?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  ANIMAL_COND: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  ANIMAL_STAT: string;
+
+  @property({
+    type: 'date',
+    required: true,
+  })
+  STATUS_DATE: string;
 
   @property({
     type: 'string',
   })
-  markings?: string;
+  BITES?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  ANIMAL_SIZE: string;
 
   @property({
     type: 'string',
   })
-  animal_cond: string;
+  COAT?: string;
 
   @property({
     type: 'string',
   })
-  animal_stat: string;
+  EARS?: string;
 
   @property({
     type: 'string',
   })
-  status_date: string;
+  TAIL?: string;
 
   @property({
     type: 'string',
   })
-  bites?: string;
-
-  @property({
-    type: 'string'
-  })
-  animal_size: 'string';
+  LEGS?: string;
 
   @property({
     type: 'string',
   })
-  coat: string;
+  COLLAR_TYPE?: string;
 
   @property({
     type: 'string',
   })
-  ears: string;
+  VET_ID?: string;
 
   @property({
     type: 'string',
   })
-  tail: string;
+  S_N_DUE_DATE?: string;
+
+  @property({
+    type: 'date',
+  })
+  S_N_COMP_DATE?: string;
 
   @property({
     type: 'string',
   })
-  legs: string;
+  VOUCHER_NO?: string;
+
+  @property({
+    type: 'date',
+  })
+  CNTRACT_EXP_DATE?: string;
 
   @property({
     type: 'string',
+    required: true,
   })
-  collar_type: string;
+  LOCATION: string;
 
   @property({
     type: 'string',
+    required: true,
   })
-  vet_id: string;
+  USERID: string;
 
   @property({
     type: 'string',
+    required: true,
   })
-  s_n_due_date: string;
-
-  @property({
-    type: 'string',
-  })
-  s_n_comp_date: string;
-
-  @property({
-    type: 'string',
-  })
-  voucher_no: string;
-
-  @property({
-    type: 'string',
-  })
-  cntract_exp_date: string;
-
-  @property({
-    type: 'string',
-  })
-  location: string;
-
-  @property({
-    type: 'string',
-  })
-
-  userid: string;
-    @property({
-    type: 'string',
-  })
-  stamp: string;
-
-
+  STAMP: string;
 
 
   constructor(data?: Partial<Animal>) {
